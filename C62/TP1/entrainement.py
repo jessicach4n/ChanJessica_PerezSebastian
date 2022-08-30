@@ -8,4 +8,4 @@ class Entrainement:
         
 if __name__ == '__main__':
     e = Entrainement()
-    e.read_file("./textes/test.txt")
+    e.read_file(".\\textes\\test.txt")
