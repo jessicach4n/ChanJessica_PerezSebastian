@@ -1,13 +1,17 @@
 import sys
+from Entrainement import Entrainement
 
-def interface_usager(window, encoding, path):
-    answer = input('''
+def interface_usager(fenetre, encodage, path):
+    rep = input('''
 Entrez un mot, le nombre de synonymes que vous voulez et la méthode de calcul, 
 i.e. produit scalaire: 0, least-squares: 1, city-block: 2
 
 Tapez q pour quitter ''')
+    entrainement = Entrainement()
+    matrice = entrainement.creation_matrice(fenetre, path)
+    print(matrice)
     
-    match answer:
+    match rep:
         case '0':
             print('Produit scalaire')
         case '1':
@@ -15,17 +19,21 @@ Tapez q pour quitter ''')
         case '2':
             print('City-block')
         case 'q':
-            return answer
+            return rep
     
-    interface_usager(window, encoding, path)
+    interface_usager(fenetre, encodage, path)
 
 def main():
-    window = str(sys.argv[1])
-    encoding = str(sys.argv[2])
-    path = str(sys.argv[3])
+    # fenetre = str(sys.argv[1])
+    # encodage = str(sys.argv[2])
+    # path = str(sys.argv[3])
     
-    answer = interface_usager(window, encoding, path)
-    if answer == 'q':
+    fenetre = 5
+    encodage = 'utf-8'
+    path = '.\\textes\\test.txt'
+    
+    rep = interface_usager(fenetre, encodage, path)
+    if rep == 'q':
         quit()
     
         
