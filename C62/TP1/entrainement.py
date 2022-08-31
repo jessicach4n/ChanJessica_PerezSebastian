@@ -7,7 +7,7 @@ class Entrainement:
         self.texte = []
         self.liste_mots = []
     
-    def lire_fichier(self, fichier, encodage):
+    def lire_fichier(self, fichier, encodage='utf-8'):
         f = open(fichier, 'r', encoding=encodage)
         for rangee in f:
             for mot in rangee.split():
