@@ -14,7 +14,7 @@ class Entrainement:
                 self.texte.append(mot)
                 if mot not in self.liste_mots:
                     self.liste_mots.append(mot)
-        
+        f.close()
         return len(self.liste_mots)
         
     def creation_matrice(self, fenetre, fichier, encodage):
