@@ -8,7 +8,7 @@ i.e. produit scalaire: 0, least-squares: 1, city-block: 2
 
 Tapez q pour quitter ''')
     entrainement = Entrainement()
-    matrice = entrainement.creation_matrice(fenetre, path)
+    matrice = entrainement.creation_matrice(fenetre, path, encodage)
     print(matrice)
     
     match rep:

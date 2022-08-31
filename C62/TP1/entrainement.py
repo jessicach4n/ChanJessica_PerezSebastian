@@ -7,9 +7,9 @@ class Entrainement:
         self.texte = []
         self.liste_mots = []
     
-    def lire_fichier(self, fichier):
-        f = open(fichier, "r")
-        for rangee in f.read():
+    def lire_fichier(self, fichier, encodage):
+        f = open(fichier, 'r', encoding=encodage)
+        for rangee in f:
             for mot in rangee.split():
                 self.texte.append(mot)
                 if mot not in self.liste_mots:
@@ -17,8 +17,8 @@ class Entrainement:
         
         return len(self.liste_mots)
         
-    def creation_matrice(self, fenetre, fichier):
-        taille_m = self.lire_fichier(fichier)
+    def creation_matrice(self, fenetre, fichier, encodage):
+        taille_m = self.lire_fichier(fichier, encodage)
         m = np.zeros((taille_m, taille_m))
         nb_voisin = math.floor(int(fenetre)/2)
         
