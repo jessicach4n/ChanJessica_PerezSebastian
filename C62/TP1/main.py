@@ -1,4 +1,4 @@
-import sys
+from sys import argv
 from Entrainement import Entrainement
 
 def interface_usager(fenetre, encodage, path):
@@ -24,13 +24,11 @@ Tapez q pour quitter ''')
     interface_usager(fenetre, encodage, path)
 
 def main():
-    # fenetre = str(sys.argv[1])
-    # encodage = str(sys.argv[2])
-    # path = str(sys.argv[3])
+    fenetre, encodage, path = str(argv[:])
     
-    fenetre = 5
-    encodage = 'utf-8'
-    path = '.\\textes\\test.txt'
+    # fenetre = 5
+    # encodage = 'utf-8'
+    # path = '.\\textes\\test.txt'
     
     rep = interface_usager(fenetre, encodage, path)
     if rep == 'q':
