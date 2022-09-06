@@ -24,11 +24,11 @@ Tapez q pour quitter ''')
     interface_usager(fenetre, encodage, path)
 
 def main():
-    fenetre, encodage, path = str(argv[:])
+    # fenetre, encodage, path = argv[1:]
     
-    # fenetre = 5
-    # encodage = 'utf-8'
-    # path = '.\\textes\\test.txt'
+    fenetre = 5
+    encodage = 'utf-8'
+    path = 'C:\\Users\\1830222\\Documents\\ChanJessica_PerezSebastian\\C62\\TP1\\textes\\test.txt'
     
     rep = interface_usager(fenetre, encodage, path)
     if rep == 'q':
