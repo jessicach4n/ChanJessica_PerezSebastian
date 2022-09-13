@@ -39,7 +39,9 @@ Tapez q pour quitter
         
         print("")
         recherche.afficher_resultat()
-        print(f"\nTemps écoulé : {end_time - start_time}")
+        
+        # POUR IMPRIMER LE TEMPS DE CALCUL DES FONCTIONS :
+        # print(f"\nTemps écoulé : {end_time - start_time}")
 
 def main():
     try:
