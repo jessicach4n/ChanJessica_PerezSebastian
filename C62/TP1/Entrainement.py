@@ -20,15 +20,8 @@ class Entrainement:
     def __creer_liste_mots(self, fichier, encodage='utf-8'):
         f = Utils.lire_fichier(fichier, encodage)
         self.__texte = re.findall('\w+', f)
-        
         self.__dict_mots = Utils.creer_dict_mots(self.__texte)
-        # self.__creer_dict_mots()
-
-    def __creer_dict_mots(self):
-        for mot in self.__texte:
-            if mot not in self.__dict_mots:
-                self.__dict_mots[mot] = len(self.__dict_mots)
-        
+       
     def creation_matrice(self, fenetre, fichier, encodage):
         self.__creer_liste_mots(fichier, encodage)
         taille_m = len(self.__dict_mots)

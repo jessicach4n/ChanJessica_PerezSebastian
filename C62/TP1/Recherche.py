@@ -32,7 +32,7 @@ class Recherche:
                 case 0:
                     score = np.sum(self.__matrice[self.__idx_mot_recherche] * self.__matrice[idx])
                 case 1:
-                    score = np.sum(np.power(self.__matrice[self.__idx_mot_recherche] - self.__matrice[idx], 2))
+                    score = np.sum((self.__matrice[self.__idx_mot_recherche] - self.__matrice[idx])**2)
                 case 2:
                     score = np.sum(np.abs(self.__matrice[self.__idx_mot_recherche] - self.__matrice[idx]))
         
@@ -42,12 +42,7 @@ class Recherche:
         path = ".\\_stopwords\\stopwords_francais.txt"
         f = Utils.lire_fichier(path)      
         texte = re.findall('\w+', f)
-        
         self.__dict_stopwords = Utils.creer_dict_mots(texte)
-        
-        # for mot in texte:
-        #     if mot not in self.__dict_stopwords:
-        #         self.__dict_stopwords[mot] = len(self.__dict_stopwords)
         
     def afficher_resultat(self):
         self.__creer_dictionnaire_stopwords()

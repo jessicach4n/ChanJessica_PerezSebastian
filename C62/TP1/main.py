@@ -36,23 +36,25 @@ Tapez q pour quitter
                 end_time = perf_counter()
             case default:
                 return             
-    
+        
+        print("")
         recherche.afficher_resultat()
-        print(f"Temps écoulé : {end_time - start_time}")
+        print(f"\nTemps écoulé : {end_time - start_time}")
 
 def main():
-    fenetre, encodage, path = argv[1:]
+    try:
+        fenetre, encodage, path = argv[1:]
+        
+        entrainement = Entrainement()
+        entrainement.creation_matrice(int(fenetre), path, encodage)
+        interface_usager(entrainement)
+    except:
+        return 1
     
-    entrainement = Entrainement()
-    entrainement.creation_matrice(int(fenetre), path, encodage)
-
-    rep = interface_usager(entrainement)
-    if rep == 'q':
-        quit()
+    return 0
     
         
 if __name__ == '__main__':
-    # quit(main())
-    main()
+    quit(main())
     
     
