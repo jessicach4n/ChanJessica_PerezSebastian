@@ -1,3 +1,4 @@
+from ast import arg
 from sys import argv
 from time import perf_counter
 
@@ -5,7 +6,7 @@ from Entrainement import Entrainement
 from Recherche import Recherche
 import re
 
-def interface_usager(entrainement):
+def interface_usager(entrainement, verbose):
     r = ""
     
     while r != 'q':
@@ -41,18 +42,22 @@ Tapez q pour quitter
         recherche.afficher_resultat()
         
         # POUR IMPRIMER LE TEMPS DE CALCUL DES FONCTIONS :
-        # print(f"\nTemps écoulé : {end_time - start_time}")
+        if verbose:
+            print(f"\nTemps écoulé : {end_time - start_time}")
 
 def main():
     try:
-        fenetre, encodage, path = argv[1:]
+        if len(argv) == 5:
+            fenetre, encodage, path, verbose = argv[1:]
+        else:
+            fenetre, encodage, path = argv[1:]
+            verbose = 0
         
         entrainement = Entrainement()
         entrainement.creation_matrice(int(fenetre), path, encodage)
-        interface_usager(entrainement)
+        interface_usager(entrainement, int(verbose))
     except:
-        return 1
-    
+        return 1    
     return 0
     
         
