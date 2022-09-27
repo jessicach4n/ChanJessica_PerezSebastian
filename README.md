@@ -13,3 +13,8 @@ Si la valeur n'est pas définie au départ, elle est automatiquement initialisé
 - 0 : Produit scalaire
 - 1 : Least-squares
 - 2 : City-block 
+
+# Dossier TP2 : 
+Utilisation d'une base de données pour emmagasiner les données qui nous ont permis d'effectuer les comparaisons du TP1
+
+**Notes**
