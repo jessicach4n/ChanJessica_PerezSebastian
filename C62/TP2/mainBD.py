@@ -49,40 +49,36 @@ Tapez q pour quitter
             print(f"\nTemps écoulé : {end_time - start_time}")
 
 def main():
-    try:
-        arguments = argv[1:]
-        opt_entrainement = '-e'
-        opt_recherche = '-r'
-        param_taille = '-t'
-        param_encodage = '--enc'
-        param_chemin = '--chemin'
+
+    # try:
+        parser = argparse.ArgumentParser(description='User input')
+        parser.add_argument('-e', action='store_true', help='Executer un entrainement')
+        parser.add_argument('-r', action='store_true', help='Executer une recherche')
+        parser.add_argument('-b', action='store_true', help='Recreer la base de donnees')
+
+        parser.add_argument('-t', nargs='?', type=int, help='Specifier la taille de fenetre')
+        parser.add_argument('--enc', nargs='?', help="Specifier l'encodage")
+        parser.add_argument('--chemin', nargs='?', help='Specifier le chemin du fichier texte')
         
-        mode_entrainement = False
-        mode_recherche = False
-        mode_BD = False
+        args = parser.parse_args()
+
 
         
-        if mode_entrainement:
-            entrainement = Entrainement()
-            # entrainement.creation_matrice(int(fenetre), path, encodage)
-            # interface_usager(entrainement, int(verbose))
-        elif mode_recherche:
-            pass
-        elif mode_BD:
-            pass
-        else:
-            pass
+        if args.e:
+            if args.t is None or args.enc is None or args.chemin is None:
+                print('Error : Needs more arguments')
+                return 1
+            elif args.t <= 0 or args.enc not in ['utf-8']:
+                print('Error : Wrong arguments')
+                return 1
+            print('works') 
 
-        # if len(argv) == 5:
-        #     fenetre, encodage, path, verbose = argv[1:]
-        # else:
-        #     fenetre, encodage, path = argv[1:]
-        #     verbose = 0
-        
+            
 
-    except:
-        return 1    
-    return 0
+
+    # except:
+    #     return 1    
+    # return 0
     
         
 if __name__ == '__main__':

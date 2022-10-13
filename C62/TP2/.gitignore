@@ -1,3 +1,7 @@
 .vscode/
 __pycache__/
 *.pyc
+.DS_Store
+C62/.DS_Store
+C62/TP1/.DS_Store
+C62/TP2/.DS_Store
