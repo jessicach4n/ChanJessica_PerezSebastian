@@ -1,12 +1,11 @@
-from ast import arg, arguments
 from sys import argv
 from time import perf_counter
 
 import argparse
-import os
 
 from Entrainement import Entrainement
 from Recherche import Recherche
+from LecteurArgs import LecteurArgs
 import re
 
 def interface_usager(entrainement, verbose):
@@ -51,30 +50,17 @@ Tapez q pour quitter
 def main():
 
     # try:
-        parser = argparse.ArgumentParser(description='User input')
-        parser.add_argument('-e', action='store_true', help='Executer un entrainement')
-        parser.add_argument('-r', action='store_true', help='Executer une recherche')
-        parser.add_argument('-b', action='store_true', help='Recreer la base de donnees')
 
-        parser.add_argument('-t', nargs='?', type=int, help='Specifier la taille de fenetre')
-        parser.add_argument('--enc', nargs='?', help="Specifier l'encodage")
-        parser.add_argument('--chemin', nargs='?', help='Specifier le chemin du fichier texte')
-        
-        args = parser.parse_args()
-
-
-        
-        if args.e:
-            if args.t is None or args.enc is None or args.chemin is None:
-                print('Error : Needs more arguments')
-                return 1
-            elif args.t <= 0 or args.enc not in ['utf-8']:
-                print('Error : Wrong arguments')
-                return 1
-            print('works') 
-
-            
-
+    options = {
+        'Entrainement' : Entrainement,
+        'Recherche' : Recherche,
+        'BD' : 'BD'
+    }
+    
+    la = LecteurArgs()
+    result = la.traiter_arguments()
+    
+    print(result)
 
     # except:
     #     return 1    

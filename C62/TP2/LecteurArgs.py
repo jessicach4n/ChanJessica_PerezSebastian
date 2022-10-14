@@ -3,14 +3,31 @@ import os
 import sys
 
 class LecteurArgs:
-    def __init__(self, description, liste_args) -> None:
-        self.parser = argparse.ArgumentParser(description)
-        self.liste_args = liste_args
+    def __init__(self) -> None:
+        parser = argparse.ArgumentParser(description='User input')
+        parser.add_argument('-e', action='store_true', help='Executer un entrainement')
+        parser.add_argument('-r', action='store_true', help='Executer une recherche')
+        parser.add_argument('-b', action='store_true', help='Recreer la base de donnees')
 
-    def set_option(self, var : str, act : str, metav : str, t : str, aide : str):
-        if (var == '-e' and len(self.liste_args)==5) or (var == '-r' and len(self.liste_args) == 3):
-            self.parser.add_argument(var, action=act, metavar=metav, type=t, help=aide)
+        parser.add_argument('-t', nargs='?', type=int, help='Specifier la taille de fenetre')
+        parser.add_argument('--enc', nargs='?', help="Specifier l'encodage")
+        parser.add_argument('--chemin', nargs='?', help='Specifier le chemin du fichier texte')
+        
+        self.args = parser.parse_args()
 
+    def traiter_arguments(self):
+        if self.args.e:
+            if self.args.t is None or self.args.enc is None or self.args.chemin is None:
+                return 'Erreur : Entrainement besoin de trois arguments'
+            elif self.args.t <= 0 or self.args.enc not in ['utf-8']:
+                return 'Erreur : Mauvais arguments'
+            return 'Entrainement'
+        elif self.args.r:
+            if self.args.t is None:
+                return 'Erreur : Recherche besoin argument taille -t'
+            return 'Recherche'
+        elif self.args.b:
+            return 'Database'
         
 
  
