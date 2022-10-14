@@ -1,3 +1,4 @@
+from email.policy import default
 from sys import argv
 from time import perf_counter
 
@@ -50,18 +51,20 @@ Tapez q pour quitter
 def main():
 
     # try:
-
-    options = {
-        'Entrainement' : Entrainement,
-        'Recherche' : Recherche,
-        'BD' : 'BD'
-    }
     
     la = LecteurArgs()
     result = la.traiter_arguments()
     
-    print(result)
-
+    match result['option']:
+        case 'Entrainement':
+            entrainement = Entrainement()
+            entrainement.creation_matrice(result['taille'], result['chemin'], result['encodage'])
+        case 'Recherche':
+            taille = result['taille']
+            interface_usager()
+        case 'Database':
+            pass
+        
     # except:
     #     return 1    
     # return 0

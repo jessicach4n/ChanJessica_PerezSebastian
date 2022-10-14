@@ -19,15 +19,15 @@ class LecteurArgs:
         if self.args.e:
             if self.args.t is None or self.args.enc is None or self.args.chemin is None:
                 return 'Erreur : Entrainement besoin de trois arguments'
-            elif self.args.t <= 0 or self.args.enc not in ['utf-8']:
+            elif self.args.t <= 0 or self.args.enc.lower() not in ['utf-8']:
                 return 'Erreur : Mauvais arguments'
-            return 'Entrainement'
+            return {'option' : 'Entrainement', 'taille' : self.args.t, 'encodage' : self.args.enc, 'chemin' : self.args.chemin}
         elif self.args.r:
             if self.args.t is None:
                 return 'Erreur : Recherche besoin argument taille -t'
-            return 'Recherche'
+            return {'option' : 'Recherche', 'taille' : self.args.t}
         elif self.args.b:
-            return 'Database'
+            return {'option' : 'Database'}
         
 
  
