@@ -1,9 +1,17 @@
 import argparse
-import os
-import sys
+from sys import argv
+from email.policy import default
+from time import perf_counter
+import re
+
+from Recherche import Recherche
+from Entrainement import Entrainement
+
 
 class LecteurArgs:
     def __init__(self) -> None:
+        self.__entrainement = Entrainement()
+
         parser = argparse.ArgumentParser(description='User input')
         parser.add_argument('-e', action='store_true', help='Executer un entrainement')
         parser.add_argument('-r', action='store_true', help='Executer une recherche')
@@ -15,19 +23,74 @@ class LecteurArgs:
         
         self.args = parser.parse_args()
 
-    def traiter_arguments(self):
+    def __traiter_arguments(self) -> dict:
         if self.args.e:
             if self.args.t is None or self.args.enc is None or self.args.chemin is None:
                 return 'Erreur : Entrainement besoin de trois arguments'
             elif self.args.t <= 0 or self.args.enc.lower() not in ['utf-8']:
                 return 'Erreur : Mauvais arguments'
-            return {'option' : 'Entrainement', 'taille' : self.args.t, 'encodage' : self.args.enc, 'chemin' : self.args.chemin}
+            self.__entrainement.update_dictionnaireBD(self.args.chemin, self.args.enc)
+            self.__entrainement.update_synonymeBD(self.args.t)
+        
         elif self.args.r:
             if self.args.t is None:
                 return 'Erreur : Recherche besoin argument taille -t'
-            return {'option' : 'Recherche', 'taille' : self.args.t}
+            self.__afficher_options_recherche()
+
         elif self.args.b:
-            return {'option' : 'Database'}
+            self.__entrainement.creationBD()
+
+    @property
+    def traiter_arguments(self):
+        return self.__traiter_arguments   
+    
+    def __afficher_options_recherche(self) -> None:
+        print('''
+*******************************
+AFFICHER OPTION POUR RECHERCHE
+*******************************
+''')
+        return #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        r = ""
+        
+        while r != 'q':
+            
+            r = input('''
+    Entrez un mot, le nombre de synonymes que vous voulez et la méthode de calcul, 
+    i.e. produit scalaire: 0, least-squares: 1, city-block: 2
+
+    Tapez q pour quitter 
+
+    ''')
+            if r == 'q':
+                return
+            
+            reponse = re.findall('\w+', r)
+            recherche = Recherche(entrainement, reponse)
+            
+            start_time = perf_counter()
+            match reponse[2]:
+                case '0':
+                    recherche.produit_scalaire()
+                    end_time = perf_counter()
+                case '1':
+                    recherche.least_squares()
+                    end_time = perf_counter()
+                case '2':
+                    recherche.city_block()
+                    end_time = perf_counter()
+                case default:
+                    return             
+            
+            print("")
+            recherche.afficher_resultat()
+            
+            # POUR IMPRIMER LE TEMPS DE CALCUL DES FONCTIONS :
+            if verbose:
+                print(f"\nTemps écoulé : {end_time - start_time}")
+
+
         
 
  
