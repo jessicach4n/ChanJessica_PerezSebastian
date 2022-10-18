@@ -1,12 +1,22 @@
 import argparse
 from sys import argv
 from email.policy import default
+from tabnanny import verbose
 from time import perf_counter
 import re
 
 from Recherche import Recherche
 from Entrainement import Entrainement
 
+QUITTER = 'q'
+
+MESS = f'''
+Entrez un mot, le nombre de synonymes que vous voulez et la méthode de calcul,
+i.e. produit scalaire: 0, least-squares: 1, city-block: 2
+
+Tapez "{QUITTER}" pour quitter.
+
+'''
 
 class LecteurArgs:
     def __init__(self) -> None:
@@ -16,7 +26,7 @@ class LecteurArgs:
         parser.add_argument('-e', action='store_true', help='Executer un entrainement')
         parser.add_argument('-r', action='store_true', help='Executer une recherche')
         parser.add_argument('-b', action='store_true', help='Recreer la base de donnees')
-
+        parser.add_argument('-v', action='store_true', help='Verbose')
         parser.add_argument('-t', nargs='?', type=int, help='Specifier la taille de fenetre')
         parser.add_argument('--enc', nargs='?', help="Specifier l'encodage")
         parser.add_argument('--chemin', nargs='?', help='Specifier le chemin du fichier texte')
@@ -35,7 +45,7 @@ class LecteurArgs:
         elif self.args.r:
             if self.args.t is None:
                 return 'Erreur : Recherche besoin argument taille -t'
-            self.__afficher_options_recherche()
+            self.__afficher_options_recherche(self.args.v)
 
         elif self.args.b:
             self.__entrainement.creationBD()
@@ -44,30 +54,11 @@ class LecteurArgs:
     def traiter_arguments(self):
         return self.__traiter_arguments   
     
-    def __afficher_options_recherche(self) -> None:
-        print('''
-*******************************
-AFFICHER OPTION POUR RECHERCHE
-*******************************
-''')
-        return #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-        r = ""
-        
-        while r != 'q':
-            
-            r = input('''
-    Entrez un mot, le nombre de synonymes que vous voulez et la méthode de calcul, 
-    i.e. produit scalaire: 0, least-squares: 1, city-block: 2
-
-    Tapez q pour quitter 
-
-    ''')
-            if r == 'q':
-                return
-            
+    def __afficher_options_recherche(self, verbose) -> None:
+        r = input(MESS)
+        while r != QUITTER:
             reponse = re.findall('\w+', r)
-            recherche = Recherche(entrainement, reponse)
+            recherche = Recherche(reponse)
             
             start_time = perf_counter()
             match reponse[2]:
@@ -85,12 +76,11 @@ AFFICHER OPTION POUR RECHERCHE
             
             print("")
             recherche.afficher_resultat()
+            reponse = input(MESS)
             
             # POUR IMPRIMER LE TEMPS DE CALCUL DES FONCTIONS :
             if verbose:
                 print(f"\nTemps écoulé : {end_time - start_time}")
-
-
         
 
  
