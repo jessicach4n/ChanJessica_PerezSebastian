@@ -1,29 +1,42 @@
-from curses.ascii import CR
 import sqlite3
+import traceback
+import Constants as chose
+
+#much Refactoring needed 
+
+CHEMIN_BD = 'synonymes.db'
+FK_ON = 'PRAGMA foreign_keys = 1'
 
 class BD:
     def __init__(self) -> None:
-        __CHEMINBD = 'synonymes.db'
-        # FOREIGN_KEYS = 'PRAGMA foreign_keys = 1'
+        self.chemin = CHEMIN_BD
+    def __enter__(self):
+        self.connecter()
+        return self
 
-        __CREER_SYNONYME = '''
-        CREATE TABLE IF NOT EXISTS synonyme
-        (
-            id INT PRIMARY KEY NOT NULL,
-            mot CHAR(20) UNIQUE  NOT NULL
-        )
-        '''
-
-    def __connecter(chemin_bd):
-        connexion = sqlite3.connect(chemin_bd)
-        curseur = connexion.cursor()
-        # curseur.execute(FOREIGN_KEYS)
+    def __exit__ (self,exc_type,exc_value, exc_tb):
+        #il manque juste curseur
+        self.deconnecter()
+        if isinstance(exc_value, Exception):
+            trace = traceback.format_exception(exc_type, exc_value, exc_tb)
+            print(''.join(trace))
+            return False
+        return True
         
-        return connexion, curseur
+        
+    def connecter(self):
+        self.connexion = sqlite3.connect(self.chemin)
+        self.curseur = self.connexion.cursor()
+        self.curseur.execute(FK_ON)
+    
+    def creer_bd(self):
+        connexion = sqlite3.connect(self.chemin)
+        curseur = connexion.cursor()
+        curseur.execute(chose.CREATION_DATABASE)
 
-    def __deconnecter(connexion, curseur): # Fermer la ressource
-        curseur.close()
-        connexion.close()
+    def deconnecter(self):
+        self.curseur.close()
+        self.connexion.close()
 
     # CHANGER POUR ÉCRIRE DANS LA BD POUR TABLE DICTIONNAIRE
     def __inserer_dictionnaireBD(texte:list):
@@ -38,5 +51,13 @@ class BD:
         pass
     
 def main():
-    bd = BD()
-    conn, cur = bd.__connecter(bd.__CHEMINBD)
+    with BD() as bd :
+
+        #bd = BD()
+        #conn, cur = bd.connecter()
+        bd.creer_bd()
+        print('fin')
+ 
+
+if __name__ == '__main__' :
+    main()

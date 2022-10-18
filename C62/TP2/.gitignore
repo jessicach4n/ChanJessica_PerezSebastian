@@ -1,6 +1,7 @@
 .vscode/
 __pycache__/
 *.pyc
+*.db
 .DS_Store
 C62/.DS_Store
 C62/TP1/.DS_Store
