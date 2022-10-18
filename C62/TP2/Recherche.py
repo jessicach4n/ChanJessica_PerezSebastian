@@ -4,9 +4,7 @@ import re
 from Utils import Utils
 
 class Recherche:
-    def __init__(self, entrainement, data):
-        self.__matrice = entrainement.m
-        self.__dict_mots = entrainement.dict_mots
+    def __init__(self, data):
         self.__dict_stopwords = {}
         self.__scores = []
         self.__mot_recherche = data[0]

@@ -2,10 +2,12 @@ import re
 import numpy as np
 
 from Utils import Utils
+from BD import BD
 
 class Entrainement:
     def __init__(self):
         self.__texte = []
+        self.__bd = BD()
 
     def creationBD(self):
         print('''
@@ -18,7 +20,7 @@ Rinitialisation de la base de données
     def update_dictionnaireBD(self, fichier:str, encodage:str='utf-8'):
         f = Utils.lire_fichier(fichier, encodage)
         self.__texte = re.findall('\w+', f)
-        Utils.inserer_dictionnaireBD(self.__texte)
+        self.__bd.inserer_dictionnaireBD(self.__texte)
            
     def update_synonymeBD(self, fenetre:str):
         dict_synonyme = {} # (idx_mot1, idx_mot2, fenetre) : coocurence

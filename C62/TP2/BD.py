@@ -39,7 +39,7 @@ class BD:
         self.connexion.close()
 
     # CHANGER POUR ÉCRIRE DANS LA BD POUR TABLE DICTIONNAIRE
-    def __inserer_dictionnaireBD(texte:list):
+    def inserer_dictionnaireBD(self, texte:list):
         dictionnaire = {}
         for mot in texte:
             if mot not in dictionnaire:
@@ -47,8 +47,9 @@ class BD:
 
 
     # FONCTION POUR INSÉRER DANS TABLE SYNONYME
-    def __inserer_synonymeBD(idx_mot1:int, idx_mot2:int, fenetre:int, occ:int):
+    def inserer_synonymeBD(idx_mot1:int, idx_mot2:int, fenetre:int, occ:int):
         pass
+
     
 def main():
     with BD() as bd :
