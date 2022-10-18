@@ -7,4 +7,3 @@ class Utils(object):
         return s
     lire_fichier = staticmethod(lire_fichier)
     
-    
