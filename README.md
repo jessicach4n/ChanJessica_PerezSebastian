@@ -17,4 +17,7 @@ Si la valeur n'est pas définie au départ, elle est automatiquement initialisé
 # Dossier TP2 : 
 Utilisation d'une base de données pour emmagasiner les données qui nous ont permis d'effectuer les comparaisons du TP1
 
+## Structure de la base de données utilisée
+<img src="C62/TP2/README-IMG.png">
+
 **Notes**
