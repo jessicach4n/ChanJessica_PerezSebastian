@@ -6,14 +6,22 @@ from Utils import Utils
 class Entrainement:
     def __init__(self):
         self.__texte = []
+
+    def creationBD(self):
+        print('''
+*************************************
+Rinitialisation de la base de données
+*************************************
+''')
+        pass
     
-    def __creer_structures_mots(self, fichier, encodage='utf-8'):
+    def update_dictionnaireBD(self, fichier:str, encodage:str='utf-8'):
         f = Utils.lire_fichier(fichier, encodage)
         self.__texte = re.findall('\w+', f)
         Utils.inserer_dictionnaireBD(self.__texte)
-
-    def creation_dictionnaireBD(self, fenetre, fichier, encodage):
-        self.__creer_structures_mots(fichier, encodage)
+           
+    def update_synonymeBD(self, fenetre:str):
+        dict_synonyme = {} # (idx_mot1, idx_mot2, fenetre) : coocurence
         nb_voisin = fenetre//2
         
         for idx, mot in enumerate(self.__texte):
@@ -34,9 +42,6 @@ class Entrainement:
                     index_mot_central = self.__dict_mots[mot]
                     index_mot = self.__dict_mots[recherche]
                     self.__m[index_mot_central][index_mot] += 1
-    
-    def creation_synonymeBD(self):
-        pass
         
 if __name__ == '__main__':
     e = Entrainement()
