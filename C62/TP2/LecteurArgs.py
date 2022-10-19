@@ -5,8 +5,9 @@ from tabnanny import verbose
 from time import perf_counter
 import re
 
-from Recherche import Recherche
-from Entrainement import Entrainement
+from RechercheBD import Recherche
+from EntrainementBD import Entrainement
+from Dao import Dao
 
 QUITTER = 'q'
 
@@ -34,21 +35,24 @@ class LecteurArgs:
         self.args = parser.parse_args()
 
     def __traiter_arguments(self) -> dict:
-        if self.args.e:
-            if self.args.t is None or self.args.enc is None or self.args.chemin is None:
-                return 'Erreur : Entrainement besoin de trois arguments'
-            elif self.args.t <= 0 or self.args.enc.lower() not in ['utf-8']:
-                return 'Erreur : Mauvais arguments'
-            self.__entrainement.update_dictionnaireBD(self.args.chemin, self.args.enc)
-            self.__entrainement.update_synonymeBD(self.args.t)
-        
-        elif self.args.r:
-            if self.args.t is None:
-                return 'Erreur : Recherche besoin argument taille -t'
-            self.__afficher_options_recherche(self.args.v)
+        with Dao() as dao :
+            if self.args.e:
+                if self.args.t is None or self.args.enc is None or self.args.chemin is None:
+                    return 'Erreur : Entrainement besoin de trois arguments'
+                elif self.args.t <= 0 or self.args.enc.lower() not in ['utf-8']:
+                    return 'Erreur : Mauvais arguments'
+                self.__entrainement.update_dictionnaireBD(self.args.chemin, self.args.enc)
+                self.__entrainement.update_synonymeBD(self.args.t)
+            
+            elif self.args.r:
+                if self.args.t is None:
+                    return 'Erreur : Recherche besoin argument taille -t'
+                self.__afficher_options_recherche(self.args.v)
 
-        elif self.args.b:
-            self.__entrainement.creationBD()
+            elif self.args.b:
+                # BD IS EMPTY ????
+                print(dao.select_from('mot', 'dictionnaire'))
+                dao.reinitialiser_bd()
 
     @property
     def traiter_arguments(self):
