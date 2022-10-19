@@ -8,7 +8,8 @@ FK_ON = 'PRAGMA foreign_keys = 1'
 class Dao:
     def __init__(self) -> None:
         self.chemin = CHEMIN_BD
-    def __enter__(self):
+
+    def __enter__(self): # What type hinting for self
         self.connecter()
         return self
 
@@ -19,8 +20,7 @@ class Dao:
             print(''.join(trace))
             return False
         return True
-        
-        
+               
     def connecter(self):
         self.connexion = sqlite3.connect(self.chemin)
         self.curseur = self.connexion.cursor()
@@ -39,6 +39,11 @@ class Dao:
         self.curseur.close()
         self.connexion.close()
 
+    def select_from(self, ligne, table) : 
+        self.curseur.execute(con.SELECT_FROM%(ligne,table))
+        reponse = self.curseur.fetchall()
+        return reponse
+
     # CHANGER POUR ÉCRIRE DANS LA BD POUR TABLE DICTIONNAIRE
     def inserer_mot_dictionnaire(self, texte:list):
         for mot in texte:
@@ -49,36 +54,24 @@ class Dao:
         #     if mot not in dictionnaire:
         #         dictionnaire[mot] = len(dictionnaire)
 
-   
-
     # FONCTION POUR INSÉRER DANS TABLE SYNONYME
     def inserer_synonyme(self,idx_mot1:int, idx_mot2:int, fenetre:int, occ:int):
        self.curseur.execute(con.AJOUTER_SYNONYME%(idx_mot1,idx_mot2,fenetre,occ))
 
-    #Pout tester sur le terminal uniquement 
-    def select_all_from_table_dictionnaire(self):
-        self.curseur.execute(con.SELECT_ALL_FROM_TABLE_DICTIONNAIRE)
-        reponse = self.curseur.fetchall()
-        for i in reponse:
-            print(i)
 
 
-    def select_all_from_table_synonime(self):
-        self.curseur.execute(con.SELECT_ALL_FROM_TABLE_SYNONYMES)
-        reponse = self.curseur.fetchall()
-        for i in reponse:
-            print(i)
+
+
     
 def main():
     with Dao() as dao :
 
         #Test dans le terminal 
-        dao.creer_bd()
-        dao.inserer_mot_dictionnaire(['bras'])
-        dao.inserer_synonyme(1,2,2,5)
+        # dao.creer_bd()
+        # dao.inserer_mot_dictionnaire(['bras'])
+        # dao.inserer_synonyme(1,2,2,5)
         #dao.reinitialiser_bd()
-        dao.select_all_from_table_dictionnaire()
-        dao.select_all_from_table_synonime()
+        print(dao.select_from('mot', 'dictionnaire'))
 
         print("fin, tout s'est bien passé")
         

@@ -42,3 +42,6 @@ SELECT * FROM dictionnaire;
 SELECT_ALL_FROM_TABLE_SYNONYMES= '''
 SELECT * FROM synonyme;
 '''
+
+SELECT_FROM = '''
+SELECT %s FROM %s'''
