@@ -57,10 +57,16 @@ class LecteurArgs:
         return self.__traiter_arguments   
     
     def __afficher_options_recherche(self, verbose) -> None:
-        r = input(MESS)
+        r = ""
         while r != QUITTER:
+
+            r = input(MESS)
+
+            if r == 'q':
+                return
+                
             reponse = re.findall('\w+', r)
-            recherche = Recherche(reponse)
+            recherche = Recherche(reponse, self.args.t)
             
             start_time = perf_counter()
             match reponse[2]:
