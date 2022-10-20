@@ -50,8 +50,6 @@ class LecteurArgs:
                 self.__afficher_options_recherche(self.args.v)
 
             elif self.args.b:
-                # BD IS EMPTY ????
-                print(dao.select_from('mot', 'dictionnaire'))
                 dao.reinitialiser_bd()
 
     @property
