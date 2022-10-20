@@ -26,15 +26,13 @@ INSERT INTO synonyme(idx_mot1, idx_mot2, taille_fenetre ,nb_occurence)
 VALUES (%d,%d,%d,%d);
 '''
 
-#### HELP?? HOW DO I PASS IT VALUES
 UPDATE_SYNONYME = '''
 UPDATE synonyme
-SET nb_occurence = ?,
+SET nb_occurence = %d
 WHERE
-    idx_mot1 = ? AND
-	idx_mot2 = ? AND
-	taille_fenetre = ?
-VALUES (%d,%d,%d,%d);
+    idx_mot1 = %d AND
+	idx_mot2 = %d AND
+	taille_fenetre = %d
 '''
 
 DROP_TABLE_SYNONYME = '''
@@ -55,4 +53,8 @@ SELECT * FROM synonyme;
 '''
 
 SELECT_FROM = '''
-SELECT %s FROM %s'''
+SELECT %s FROM %s;'''
+
+SELECT_FROM_WHERE = '''
+SELECT %s FROM %s WHERE %s;
+'''

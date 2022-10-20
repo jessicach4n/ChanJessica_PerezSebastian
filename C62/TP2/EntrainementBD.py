@@ -83,14 +83,7 @@ class Entrainement:
 
                         # Do update because it exists in table
                         # Make update constant
-                        dao.update_synonyme(f'''
-                        UPDATE synonyme
-                        SET nb_occurence = {self.__m[idx_mot1, idx_mot2, f]}
-                        WHERE
-                            idx_mot1 = {idx_mot1} AND
-                            idx_mot2 = {idx_mot2} AND
-                            taille_fenetre = {f}
-                        ''')
+                        dao.update_synonyme(idx_mot1, idx_mot2, f, self.__m[idx_mot1, idx_mot2, f])
                         self.__m.pop((cle_compose))
                         
             for syn in self.__m:

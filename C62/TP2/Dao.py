@@ -44,13 +44,18 @@ class Dao:
         reponse = self.curseur.fetchall()
         return reponse
 
+    def select_from_where(self, colonne, table, condition):
+        self.curseur.execute(con.SELECT_FROM_WHERE%(colonne, table, condition))
+        reponse = self.curseur.fetchall()
+        return reponse
+
     def inserer_mot_dictionnaire(self, texte:list):
         for mot in texte:
             self.curseur.execute(con.AJOUTER_MOT_DICTIONNAIRE%(mot))
         self.connexion.commit()
 
-    def update_synonyme(self, requete):
-        self.curseur.execute(requete)
+    def update_synonyme(self, idx1, idx2, taille_fenetre, occurence):
+        self.curseur.execute(con.UPDATE_SYNONYME%(occurence, idx1, idx2, taille_fenetre))
         self.connexion.commit()
 
     def inserer_synonyme(self,idx_mot1:int, idx_mot2:int, fenetre:int, occ:int):
