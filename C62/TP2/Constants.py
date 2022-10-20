@@ -26,6 +26,17 @@ INSERT INTO synonyme(idx_mot1, idx_mot2, taille_fenetre ,nb_occurence)
 VALUES (%d,%d,%d,%d);
 '''
 
+#### HELP?? HOW DO I PASS IT VALUES
+UPDATE_SYNONYME = '''
+UPDATE synonyme
+SET nb_occurence = ?,
+WHERE
+    idx_mot1 = ? AND
+	idx_mot2 = ? AND
+	taille_fenetre = ?
+VALUES (%d,%d,%d,%d);
+'''
+
 DROP_TABLE_SYNONYME = '''
 DROP TABLE IF EXISTS synonyme;
 '''

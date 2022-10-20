@@ -9,7 +9,7 @@ class Dao:
     def __init__(self) -> None:
         self.chemin = CHEMIN_BD
 
-    def __enter__(self): # What type hinting for self
+    def __enter__(self): 
         self.connecter()
         return self
 
@@ -44,38 +44,15 @@ class Dao:
         reponse = self.curseur.fetchall()
         return reponse
 
-    # CHANGER POUR ÉCRIRE DANS LA BD POUR TABLE DICTIONNAIRE
     def inserer_mot_dictionnaire(self, texte:list):
         for mot in texte:
             self.curseur.execute(con.AJOUTER_MOT_DICTIONNAIRE%(mot))
-        #code de Jessica
-        # dictionnaire = {}
-        # for mot in texte:
-        #     if mot not in dictionnaire:
-        #         dictionnaire[mot] = len(dictionnaire)
+        self.connexion.commit()
 
-    # FONCTION POUR INSÉRER DANS TABLE SYNONYME
+    def update_synonyme(self, requete):
+        self.curseur.execute(requete)
+        self.connexion.commit()
+
     def inserer_synonyme(self,idx_mot1:int, idx_mot2:int, fenetre:int, occ:int):
-       self.curseur.execute(con.AJOUTER_SYNONYME%(idx_mot1,idx_mot2,fenetre,occ))
-
-
-
-
-
-    
-def main():
-    with Dao() as dao :
-
-        #Test dans le terminal 
-        # dao.creer_bd()
-        # dao.inserer_mot_dictionnaire(['bras'])
-        # dao.inserer_synonyme(1,2,2,5)
-        #dao.reinitialiser_bd()
-        print(dao.select_from('mot', 'dictionnaire'))
-
-        print("fin, tout s'est bien passé")
-        
- 
-
-if __name__ == '__main__' :
-    main()
+        self.curseur.execute(con.AJOUTER_SYNONYME%(idx_mot1,idx_mot2,fenetre,occ))
+        self.connexion.commit()
