@@ -58,8 +58,7 @@ class Entrainement:
                             self.__m[(index_mot_central, index_mot, fenetre)] = 0
                         
                         self.__m[(index_mot_central, index_mot, fenetre)] += 1
-
-                       
+                 
                 for i in range(nb_voisin):
                     index_mot_inv = idx - 1 - i
                     if index_mot_inv >= 0:
