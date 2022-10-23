@@ -84,7 +84,6 @@ class LecteurArgs:
             
             print("")
             recherche.afficher_resultat()
-            reponse = input(MESS)
             
             # POUR IMPRIMER LE TEMPS DE CALCUL DES FONCTIONS :
             if verbose:
