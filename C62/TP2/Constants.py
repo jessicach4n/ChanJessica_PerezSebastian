@@ -1,7 +1,7 @@
 CREATION_TABLE_DICTIONNAIRE = '''
 
 CREATE TABLE IF NOT EXISTS dictionnaire (
-	id 					INTEGER 			PRIMARY KEY AUTOINCREMENT,
+	id 					INTEGER 			PRIMARY KEY,
 	mot		 			VARCHAR ( 100 ) 	NOT NULL
 );
 
@@ -17,22 +17,22 @@ CREATE TABLE IF NOT EXISTS synonyme (
 );
 '''
 AJOUTER_MOT_DICTIONNAIRE = '''
-INSERT INTO dictionnaire(mot)
-VALUES ('%s');
+INSERT INTO dictionnaire(id, mot)
+VALUES (?,?);
 '''
 
 AJOUTER_SYNONYME = '''
 INSERT INTO synonyme(idx_mot1, idx_mot2, taille_fenetre ,nb_occurence)
-VALUES (%d,%d,%d,%d);
+VALUES (?,?,?,?);
 '''
 
 UPDATE_SYNONYME = '''
 UPDATE synonyme
-SET nb_occurence = %d
+SET nb_occurence = ?
 WHERE
-    idx_mot1 = %d AND
-	idx_mot2 = %d AND
-	taille_fenetre = %d
+    idx_mot1 = ? AND
+	idx_mot2 = ? AND
+	taille_fenetre = ?
 '''
 
 DROP_TABLE_SYNONYME = '''
@@ -52,9 +52,18 @@ SELECT_ALL_FROM_TABLE_SYNONYMES= '''
 SELECT * FROM synonyme;
 '''
 
-SELECT_FROM = '''
-SELECT %s FROM %s;'''
+SELECT_FROM_DICTIONNAIRE = '''
+SELECT * FROM dictionnaire;
+'''
 
-SELECT_FROM_WHERE = '''
-SELECT %s FROM %s WHERE %s;
+SELECT_FROM_SYNONYME = '''
+SELECT * FROM synonyme;
+'''
+
+SELECT_FROM_SYNONYME_WHERE = '''
+SELECT idx_mot1, idx_mot2, nb_occurence FROM synonyme WHERE ?;
+'''
+
+SELECT_COUNT_SYNONYME = '''
+SELECT DISTINCT COUNT(idx_mot1) FROM synonyme WHERE taille_fenetre = ?;
 '''

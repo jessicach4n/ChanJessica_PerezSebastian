@@ -1,4 +1,5 @@
 import argparse
+from selectors import SelectorKey
 from sys import argv
 from email.policy import default
 from tabnanny import verbose
@@ -41,9 +42,17 @@ class LecteurArgs:
                     return 'Erreur : Entrainement besoin de trois arguments'
                 elif self.args.t <= 0 or self.args.enc.lower() not in ['utf-8']:
                     return 'Erreur : Mauvais arguments'
+                
+                start_time = perf_counter()
                 self.__entrainement.update_dictionnaireBD(self.args.chemin, self.args.enc)
+                end_time_dictionnaireBD = perf_counter()
                 self.__entrainement.update_synonymeBD(self.args.t)
-            
+                end_time_synonymeBD = perf_counter()
+                
+                if self.args.v:
+                    print(f"\nTemps écoulé dictionnaireBD: {end_time_dictionnaireBD - start_time}")
+                    print(f"\nTemps écoulé synonymeBD: {end_time_synonymeBD - start_time}\n")
+
             elif self.args.r:
                 if self.args.t is None:
                     return 'Erreur : Recherche besoin argument taille -t'

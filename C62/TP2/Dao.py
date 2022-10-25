@@ -39,25 +39,34 @@ class Dao:
         self.curseur.close()
         self.connexion.close()
 
-    def select_from(self, ligne, table) : 
-        self.curseur.execute(con.SELECT_FROM%(ligne,table))
+    def select_from_dictionnaire(self) : 
+        self.curseur.execute(con.SELECT_FROM_DICTIONNAIRE)
         reponse = self.curseur.fetchall()
         return reponse
 
-    def select_from_where(self, colonne, table, condition):
-        self.curseur.execute(con.SELECT_FROM_WHERE%(colonne, table, condition))
+    def select_from_synonyme(self) : 
+        self.curseur.execute(con.SELECT_FROM_SYNONYME)
         reponse = self.curseur.fetchall()
         return reponse
 
-    def inserer_mot_dictionnaire(self, texte:list):
-        for mot in texte:
-            self.curseur.execute(con.AJOUTER_MOT_DICTIONNAIRE%(mot))
+    def select_from_synonyme_where(self, condition):
+        self.curseur.execute(con.SELECT_FROM_SYNONYME_WHERE,(condition))
+        reponse = self.curseur.fetchall()
+        return reponse
+
+    def select_count_synonyme(self, condition):
+        self.curseur.execute(con.SELECT_COUNT_SYNONYME,(condition))
+        reponse = self.curseur.fetchall()
+        return reponse
+
+    def inserer_mot_dictionnaire(self, liste_mots:list):
+        self.curseur.executemany(con.AJOUTER_MOT_DICTIONNAIRE,(liste_mots))
         self.connexion.commit()
 
-    def update_synonyme(self, idx1, idx2, taille_fenetre, occurence):
-        self.curseur.execute(con.UPDATE_SYNONYME%(occurence, idx1, idx2, taille_fenetre))
+    def update_synonyme(self, liste_update_synonyme):
+        self.curseur.executemany(con.UPDATE_SYNONYME,(liste_update_synonyme))
         self.connexion.commit()
 
-    def inserer_synonyme(self,idx_mot1:int, idx_mot2:int, fenetre:int, occ:int):
-        self.curseur.execute(con.AJOUTER_SYNONYME%(idx_mot1,idx_mot2,fenetre,occ))
+    def inserer_synonyme(self,liste_nouveau_synonyme):
+        self.curseur.executemany(con.AJOUTER_SYNONYME,(liste_nouveau_synonyme))
         self.connexion.commit()
