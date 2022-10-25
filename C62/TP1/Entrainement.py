@@ -47,7 +47,7 @@ class Entrainement:
                     index_mot = self.__dict_mots[recherche]
                     self.__m[index_mot_central][index_mot] += 1
                     
-        print(self.__m)
+     
     
         
 if __name__ == '__main__':

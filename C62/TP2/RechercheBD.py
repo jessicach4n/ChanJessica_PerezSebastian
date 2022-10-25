@@ -16,20 +16,24 @@ class Recherche:
         self.__decroissant = True
         
         with Dao() as dao:
-            liste_mots = dao.select_from('*', 'dictionnaire')
+            liste_mots = dao.select_from_dictionnaire()
             for tuple_mot in liste_mots:
                 idx, mot = tuple_mot
                 self.__dict_mots[mot] = idx
 
-            condition = 'taille_fenetre = ' + str(taille_fenetre)
-            self.__liste_synonymes = dao.select_from_where('idx_mot1, idx_mot2, nb_occurence', 'synonyme', condition)
+            condition = str(taille_fenetre)
+            self.__liste_synonymes = dao.select_from_synonyme_where(condition)
+            
             for tuple_synonyme in self.__liste_synonymes:
                     idx_mot1, idx_mot2, occurence = tuple_synonyme
                     cle_compose = (idx_mot1, idx_mot2, taille_fenetre)
                     self.__dict_synonymes[cle_compose] = occurence
 
+            taille_m = dao.select_count_synonyme(condition)            
+            self.__matrice = np.zeros((taille_m[0][0], taille_m[0][0]))
+
         self.__idx_mot_recherche = self.__dict_mots[self.__mot_recherche]
-   
+        self.__creer_matrice()
 
     def produit_scalaire(self):
         self.__calcul_score()
@@ -41,33 +45,25 @@ class Recherche:
     def city_block(self):
         self.__decroissant = False
         self.__calcul_score()
-            
-    def __calcul_score(self):
-        with Dao() as dao:
-            for mot_compare, idx in self.__dict_mots.items():
-                score = 0
-                match self.__option:
-                    case 0:
-                        condition = f'''
-                        idx_mot1 = {idx} 
-                        OR idx_mot2 = {idx} 
-                        AND idx_mot1 = {self.__idx_mot_recherche} 
-                        OR idx_mot2 = {self.__idx_mot_recherche}
-                        '''
-                        
-                        occurences = np.array(dao.select_from_where('nb_occurence', 'synonyme', condition))
-                        score = np.sum(occurences)
+    
+    def __creer_matrice(self):
+        for cle_compose in self.__dict_synonymes:
+            idx_mot1, idx_mot2, f = cle_compose
+            nb_occurence = self.__dict_synonymes[cle_compose]
+            self.__matrice[idx_mot1][idx_mot2] = nb_occurence
 
-                        # MULTIPLY WHAT ???
-                        #score = np.sum(self.__matrice[self.__idx_mot_recherche] * self.__matrice[idx])
-                    case 1:
-                        print('least_squares')
-                        #score = np.sum((self.__matrice[self.__idx_mot_recherche] - self.__matrice[idx])**2)
-                    case 2:
-                        print('city_block')
-                        #score = np.sum(np.abs(self.__matrice[self.__idx_mot_recherche] - self.__matrice[idx]))
-            
-                self.__scores.append((score, mot_compare))
+    def __calcul_score(self):
+        for mot_compare, idx in self.__dict_mots.items():
+            score = 0
+            match self.__option:
+                case 0:
+                    score = np.sum(self.__matrice[self.__idx_mot_recherche] * self.__matrice[idx])
+                case 1:
+                    score = np.sum((self.__matrice[self.__idx_mot_recherche] - self.__matrice[idx])**2)
+                case 2:
+                    score = np.sum(np.abs(self.__matrice[self.__idx_mot_recherche] - self.__matrice[idx]))
+        
+            self.__scores.append((score, mot_compare))
 
     def __creer_dictionnaire_stopwords(self):
         path = "../_stopwords/stopwords_francais.txt"
@@ -77,6 +73,7 @@ class Recherche:
         
     def afficher_resultat(self):
         self.__creer_dictionnaire_stopwords()
+        
         scores_croissant = sorted(self.__scores, reverse=self.__decroissant)
         resultats = []
         counter = 0
