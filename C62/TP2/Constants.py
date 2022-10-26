@@ -13,7 +13,15 @@ CREATE TABLE IF NOT EXISTS synonyme (
   	taille_fenetre		 		INT  	NOT NULL,
   	nb_occurence				INT		NOT NULL,
   
-  PRIMARY KEY ( idx_mot1, idx_mot2, taille_fenetre)
+    PRIMARY KEY ( idx_mot1, idx_mot2, taille_fenetre),
+	
+  	CONSTRAINT fk_idx1_mot
+      FOREIGN KEY(idx_mot1) 
+	  REFERENCES dictionnaire(id),
+
+  	CONSTRAINT fk_idx2_mot
+      FOREIGN KEY(idx_mot2) 
+	  REFERENCES dictionnaire(id)
 );
 '''
 AJOUTER_MOT_DICTIONNAIRE = '''

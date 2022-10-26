@@ -67,13 +67,16 @@ class Entrainement:
             liste_update_synonymes = []
             
             if len(liste_synonymes) > 0:
+                # print(self.__dict_synonymes)
                 for tuple_synonyme in liste_synonymes:
                     idx_mot1, idx_mot2, f, occurence = tuple_synonyme
                     cle_compose = (idx_mot1, idx_mot2, f)
                     if (cle_compose) in self.__dict_synonymes:
                         self.__dict_synonymes[idx_mot1, idx_mot2, f] += occurence
+                        # print ("going into update")
                         liste_update_synonymes.append((idx_mot1, idx_mot2, f, self.__dict_synonymes[idx_mot1, idx_mot2, f]))
                     else :
+                        # print ("going into new")
                         liste_nouveau_synonymes.append((idx_mot1, idx_mot2, f, occurence))
             else:
                 for syn in self.__dict_synonymes:
