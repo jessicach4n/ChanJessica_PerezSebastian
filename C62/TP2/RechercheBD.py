@@ -29,7 +29,8 @@ class Recherche:
                     cle_compose = (idx_mot1, idx_mot2, taille_fenetre)
                     self.__dict_synonymes[cle_compose] = occurence
 
-            taille_m = dao.select_count_synonyme(condition)            
+            taille_m = dao.select_count_synonyme(condition)         
+            print(f"taaille M :  {taille_m} condition { condition}")   
             self.__matrice = np.zeros((taille_m[0][0], taille_m[0][0]))
 
         self.__idx_mot_recherche = self.__dict_mots[self.__mot_recherche]
