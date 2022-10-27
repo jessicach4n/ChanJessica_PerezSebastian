@@ -1,6 +1,7 @@
 import re
 
 from Utils import Utils
+# from C62.TP2.Constants import SELECT_FROM_SYNONYME_WHERE
 from Dao import Dao
 
 class Entrainement:
@@ -62,27 +63,37 @@ class Entrainement:
                     self.__dict_synonymes[(index_mot_central, index_mot, fenetre)] += 1
         
         with Dao() as dao:
-            liste_synonymes = dao.select_from_synonyme()
+            dict_synonymes_BD = {}
+            for index_mot_central, index_mot, nb_occurence in dao.select_from_synonyme_where(str(fenetre)):
+                dict_synonymes_BD[(index_mot_central, index_mot, fenetre)] = nb_occurence
             liste_nouveau_synonymes = []
             liste_update_synonymes = []
             
-            if len(liste_synonymes) > 0:
-                # print(self.__dict_synonymes)
-                for tuple_synonyme in liste_synonymes:
-                    idx_mot1, idx_mot2, f, occurence = tuple_synonyme
-                    cle_compose = (idx_mot1, idx_mot2, f)
-                    if (cle_compose) in self.__dict_synonymes:
-                        self.__dict_synonymes[idx_mot1, idx_mot2, f] += occurence
-                        # print ("going into update")
-                        liste_update_synonymes.append((idx_mot1, idx_mot2, f, self.__dict_synonymes[idx_mot1, idx_mot2, f]))
-                    else :
-                        # print ("going into new")
-                        liste_nouveau_synonymes.append((idx_mot1, idx_mot2, f, occurence))
-            else:
-                for syn in self.__dict_synonymes:
-                    idx_mot1, idx_mot2, f = syn
-                    occurence = self.__dict_synonymes[syn]
-                    liste_nouveau_synonymes.append((idx_mot1, idx_mot2, f, occurence))
+            for (index_mot_central, index_mot, fenetre), nb_occurence in self.__dict_synonymes.items():
+                if (index_mot_central, index_mot, fenetre) not in dict_synonymes_BD :
+                     liste_nouveau_synonymes.append((index_mot_central, index_mot, fenetre, nb_occurence))
+                else :
+                    dict_synonymes_BD[(index_mot_central, index_mot, fenetre)] += nb_occurence
+                    liste_update_synonymes.append((index_mot_central, index_mot, fenetre, dict_synonymes_BD[(index_mot_central, index_mot, fenetre)]))
+
+
+            # if len(liste_synonymes) > 0:
+            #     # print(self.__dict_synonymes)
+            #     for tuple_synonyme in liste_synonymes:
+            #         idx_mot1, idx_mot2, f, occurence = tuple_synonyme
+            #         cle_compose = (idx_mot1, idx_mot2, f)
+            #         if (cle_compose) in self.__dict_synonymes:
+            #             self.__dict_synonymes[idx_mot1, idx_mot2, f] += occurence
+            #             # print ("going into update")
+            #             liste_update_synonymes.append((idx_mot1, idx_mot2, f, self.__dict_synonymes[idx_mot1, idx_mot2, f]))
+            #         else :
+            #             # print ("going into new")
+            #             liste_nouveau_synonymes.append((idx_mot1, idx_mot2, f, occurence))
+            # else:
+            #     for syn in self.__dict_synonymes:
+            #         idx_mot1, idx_mot2, f = syn
+            #         occurence = self.__dict_synonymes[syn]
+            #         liste_nouveau_synonymes.append((idx_mot1, idx_mot2, f, occurence))
 
             dao.update_synonyme(liste_update_synonymes)
             dao.inserer_synonyme(liste_nouveau_synonymes)

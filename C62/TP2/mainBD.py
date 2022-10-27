@@ -7,5 +7,7 @@ def main():
           
 if __name__ == '__main__':
     quit(main())
+    #try except dans le main si input invalide 
+    
     
     

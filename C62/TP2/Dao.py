@@ -50,14 +50,14 @@ class Dao:
         return reponse
 
     def select_from_synonyme_where(self, condition):
-        self.curseur.execute(con.SELECT_FROM_SYNONYME_WHERE,(condition))
+        self.curseur.execute(con.SELECT_FROM_SYNONYME_WHERE,(condition,))
         reponse = self.curseur.fetchall()
         return reponse
 
-    def select_count_synonyme(self, condition):
-        self.curseur.execute(con.SELECT_COUNT_SYNONYME,(condition))
-        reponse = self.curseur.fetchall()
-        return reponse
+    # def select_count_synonyme(self, condition):
+    #     self.curseur.execute(con.SELECT_COUNT_SYNONYME,(condition))
+    #     reponse = self.curseur.fetchall()
+    #     return reponse
 
     def inserer_mot_dictionnaire(self, liste_mots:list):
         self.curseur.executemany(con.AJOUTER_MOT_DICTIONNAIRE,(liste_mots))

@@ -21,17 +21,26 @@ class Recherche:
                 idx, mot = tuple_mot
                 self.__dict_mots[mot] = idx
 
-            condition = str(taille_fenetre)
+            condition = (taille_fenetre)
+            print(f" taille fenetre : {condition}")
             self.__liste_synonymes = dao.select_from_synonyme_where(condition)
             
+            # demander a la base de données de faire ça
             for tuple_synonyme in self.__liste_synonymes:
                     idx_mot1, idx_mot2, occurence = tuple_synonyme
                     cle_compose = (idx_mot1, idx_mot2, taille_fenetre)
                     self.__dict_synonymes[cle_compose] = occurence
 
-            taille_m = dao.select_count_synonyme(condition)         
-            print(f"taaille M :  {taille_m} condition { condition}")   
-            self.__matrice = np.zeros((taille_m[0][0], taille_m[0][0]))
+            d = {}
+            for id, mot in dao.select_from_dictionnaire():
+                d[mot] = id        
+
+            self.__matrice = np.zeros((len(d), len(d)))
+            print (len(self.__matrice))
+
+            for id_mot, id_concurrenre, nb_occurence in self.__liste_synonymes:
+                self.__matrice [id_mot,id_concurrenre] = nb_occurence
+            
 
         self.__idx_mot_recherche = self.__dict_mots[self.__mot_recherche]
         self.__creer_matrice()
