@@ -5,7 +5,7 @@ from Utils import Utils
 from Dao import Dao
 
 class Recherche:
-    def __init__(self, data, taille_fenetre):
+    def __init__(self, data:list, taille_fenetre:int) -> None:
         self.__dict_stopwords = {}
         self.__dict_synonymes = {}
         self.__dict_mots = {}
@@ -16,32 +16,13 @@ class Recherche:
         self.__decroissant = True
         
         with Dao() as dao:
-            liste_mots = dao.select_from_dictionnaire()
-            for tuple_mot in liste_mots:
-                idx, mot = tuple_mot
-                self.__dict_mots[mot] = idx
+            self.__creer_dictionnaire_mots(dao)
+            self.__creer_dictionnaire_synonyme(dao, taille_fenetre)
 
-            condition = (taille_fenetre)
-            print(f" taille fenetre : {condition}")
-            self.__liste_synonymes = dao.select_from_synonyme_where(condition)
+        self.__matrice = np.zeros((len(self.__dict_mots), len(self.__dict_mots)))
+        for id_mot, id_occurence, nb_occurence in self.__liste_synonymes:
+            self.__matrice[id_mot,id_occurence] = nb_occurence
             
-            # demander a la base de données de faire ça
-            for tuple_synonyme in self.__liste_synonymes:
-                    idx_mot1, idx_mot2, occurence = tuple_synonyme
-                    cle_compose = (idx_mot1, idx_mot2, taille_fenetre)
-                    self.__dict_synonymes[cle_compose] = occurence
-
-            d = {}
-            for id, mot in dao.select_from_dictionnaire():
-                d[mot] = id        
-
-            self.__matrice = np.zeros((len(d), len(d)))
-            print (len(self.__matrice))
-
-            for id_mot, id_concurrenre, nb_occurence in self.__liste_synonymes:
-                self.__matrice [id_mot,id_concurrenre] = nb_occurence
-            
-
         self.__idx_mot_recherche = self.__dict_mots[self.__mot_recherche]
         self.__creer_matrice()
 
@@ -55,14 +36,31 @@ class Recherche:
     def city_block(self):
         self.__decroissant = False
         self.__calcul_score()
+        
+    def __creer_dictionnaire_mots(self, dao:Dao) -> None:
+        for id, mot in dao.select_from_dictionnaire():
+            self.__dict_mots[mot] = id
     
-    def __creer_matrice(self):
+    def __creer_dictionnaire_synonyme(self, dao:Dao, taille_fenetre:int) -> None:
+        self.__liste_synonymes = dao.select_from_synonyme_where(taille_fenetre)
+        for tuple_synonyme in self.__liste_synonymes:
+            idx_mot1, idx_mot2, occurence = tuple_synonyme
+            cle_compose = (idx_mot1, idx_mot2, taille_fenetre)
+            self.__dict_synonymes[cle_compose] = occurence
+
+    def __creer_dictionnaire_stopwords(self) -> None:
+        path = "../_stopwords/stopwords_francais.txt"
+        f = Utils.lire_fichier(path)      
+        texte = re.findall('\w+', f)
+        self.__dict_stopwords = Utils.creer_dict_mots(texte)
+    
+    def __creer_matrice(self) -> None:
         for cle_compose in self.__dict_synonymes:
             idx_mot1, idx_mot2, f = cle_compose
             nb_occurence = self.__dict_synonymes[cle_compose]
             self.__matrice[idx_mot1][idx_mot2] = nb_occurence
 
-    def __calcul_score(self):
+    def __calcul_score(self) -> None:
         for mot_compare, idx in self.__dict_mots.items():
             score = 0
             match self.__option:
@@ -74,14 +72,8 @@ class Recherche:
                     score = np.sum(np.abs(self.__matrice[self.__idx_mot_recherche] - self.__matrice[idx]))
         
             self.__scores.append((score, mot_compare))
-
-    def __creer_dictionnaire_stopwords(self):
-        path = "../_stopwords/stopwords_francais.txt"
-        f = Utils.lire_fichier(path)      
-        texte = re.findall('\w+', f)
-        self.__dict_stopwords = Utils.creer_dict_mots(texte)
         
-    def afficher_resultat(self):
+    def afficher_resultat(self) -> None:
         self.__creer_dictionnaire_stopwords()
         
         scores_croissant = sorted(self.__scores, reverse=self.__decroissant)

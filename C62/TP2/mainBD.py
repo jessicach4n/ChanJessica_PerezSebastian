@@ -1,13 +1,15 @@
-from LecteurArgs import LecteurArgs
-from Dao import Dao
+from Arguments import Arguments
 
 def main():
-    la = LecteurArgs()
-    la.traiter_arguments()
+    try:
+        a = Arguments()
+        a.traiter_arguments()
+    except:
+        return 1
+    return 0
           
 if __name__ == '__main__':
     quit(main())
-    #try except dans le main si input invalide 
     
     
     

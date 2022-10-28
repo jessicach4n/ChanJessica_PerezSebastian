@@ -1,11 +1,9 @@
 import re
-
 from Utils import Utils
-# from C62.TP2.Constants import SELECT_FROM_SYNONYME_WHERE
 from Dao import Dao
 
 class Entrainement:
-    def __init__(self):
+    def __init__(self) -> None:
         self.__texte = []
         self.__dict_mots = {}
         self.__dict_synonymes = {}
@@ -33,7 +31,7 @@ class Entrainement:
                 idx_mot, mot = tuple_mot
                 self.__dict_mots[mot] = idx_mot
                 
-    def update_synonymeBD(self, fenetre:str):
+    def __creer_synonymes(self, fenetre:str):
         nb_voisin = fenetre//2
     
         for idx, mot in enumerate(self.__texte):
@@ -62,6 +60,8 @@ class Entrainement:
                     
                     self.__dict_synonymes[(index_mot_central, index_mot, fenetre)] += 1
         
+    def update_synonymeBD(self, fenetre:str): 
+        self.__creer_synonymes(fenetre)
         with Dao() as dao:
             dict_synonymes_BD = {}
             for index_mot_central, index_mot, nb_occurence in dao.select_from_synonyme_where(str(fenetre)):
@@ -75,25 +75,6 @@ class Entrainement:
                 else :
                     dict_synonymes_BD[(index_mot_central, index_mot, fenetre)] += nb_occurence
                     liste_update_synonymes.append((index_mot_central, index_mot, fenetre, dict_synonymes_BD[(index_mot_central, index_mot, fenetre)]))
-
-
-            # if len(liste_synonymes) > 0:
-            #     # print(self.__dict_synonymes)
-            #     for tuple_synonyme in liste_synonymes:
-            #         idx_mot1, idx_mot2, f, occurence = tuple_synonyme
-            #         cle_compose = (idx_mot1, idx_mot2, f)
-            #         if (cle_compose) in self.__dict_synonymes:
-            #             self.__dict_synonymes[idx_mot1, idx_mot2, f] += occurence
-            #             # print ("going into update")
-            #             liste_update_synonymes.append((idx_mot1, idx_mot2, f, self.__dict_synonymes[idx_mot1, idx_mot2, f]))
-            #         else :
-            #             # print ("going into new")
-            #             liste_nouveau_synonymes.append((idx_mot1, idx_mot2, f, occurence))
-            # else:
-            #     for syn in self.__dict_synonymes:
-            #         idx_mot1, idx_mot2, f = syn
-            #         occurence = self.__dict_synonymes[syn]
-            #         liste_nouveau_synonymes.append((idx_mot1, idx_mot2, f, occurence))
 
             dao.update_synonyme(liste_update_synonymes)
             dao.inserer_synonyme(liste_nouveau_synonymes)
