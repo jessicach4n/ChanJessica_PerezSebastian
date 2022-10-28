@@ -1,3 +1,13 @@
+QUITTER = 'q'
+
+MESS = f'''
+Entrez un mot, le nombre de synonymes que vous voulez et la méthode de calcul,
+i.e. produit scalaire: 0, least-squares: 1, city-block: 2
+
+Tapez "{QUITTER}" pour quitter.
+
+'''
+
 CREATION_TABLE_DICTIONNAIRE = '''
 
 CREATE TABLE IF NOT EXISTS dictionnaire (
@@ -51,15 +61,6 @@ DROP_TABLE_DICTIONNAIRE = '''
 DROP TABLE IF EXISTS dictionnaire;
 '''
 
-#Pour Tester La bd dans le terminal 
-SELECT_ALL_FROM_TABLE_DICTIONNAIRE= '''
-SELECT * FROM dictionnaire;
-'''
-
-SELECT_ALL_FROM_TABLE_SYNONYMES= '''
-SELECT * FROM synonyme;
-'''
-
 SELECT_FROM_DICTIONNAIRE = '''
 SELECT * FROM dictionnaire;
 '''
@@ -70,8 +71,4 @@ SELECT * FROM synonyme;
 
 SELECT_FROM_SYNONYME_WHERE = '''
 SELECT idx_mot1, idx_mot2, nb_occurence FROM synonyme WHERE ?;
-'''
-
-SELECT_COUNT_SYNONYME = '''
-SELECT DISTINCT COUNT(idx_mot1) FROM synonyme WHERE taille_fenetre = ?;
 '''

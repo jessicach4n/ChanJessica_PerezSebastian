@@ -1,26 +1,13 @@
 import argparse
-from selectors import SelectorKey
-from sys import argv
-from email.policy import default
-from tabnanny import verbose
 from time import perf_counter
 import re
 
 from RechercheBD import Recherche
 from EntrainementBD import Entrainement
 from Dao import Dao
+import Constants as con
 
-QUITTER = 'q'
-
-MESS = f'''
-Entrez un mot, le nombre de synonymes que vous voulez et la méthode de calcul,
-i.e. produit scalaire: 0, least-squares: 1, city-block: 2
-
-Tapez "{QUITTER}" pour quitter.
-
-'''
-
-class LecteurArgs:
+class Arguments:
     def __init__(self) -> None:
         self.__entrainement = Entrainement()
 
@@ -35,13 +22,14 @@ class LecteurArgs:
         
         self.args = parser.parse_args()
 
-    def __traiter_arguments(self) -> dict:
+    def traiter_arguments(self) -> None:
         with Dao() as dao :
             if self.args.e:
                 if self.args.t is None or self.args.enc is None or self.args.chemin is None:
-                    return 'Erreur : Entrainement besoin de trois arguments'
+                    raise Exception('Entrainement besoin de trois arguments')
+
                 elif self.args.t <= 0 or self.args.enc.lower() not in ['utf-8']:
-                    return 'Erreur : Mauvais arguments'
+                    raise Exception('Mauvais arguments')
                 
                 start_time = perf_counter()
                 self.__entrainement.update_dictionnaireBD(self.args.chemin, self.args.enc)
@@ -50,26 +38,21 @@ class LecteurArgs:
                 end_time_synonymeBD = perf_counter()
                 
                 if self.args.v:
-                    print(f"\nTemps écoulé dictionnaireBD: {end_time_dictionnaireBD - start_time}")
-                    print(f"\nTemps écoulé synonymeBD: {end_time_synonymeBD - start_time}\n")
+                    print(f"\nTemps écoulé (dictionnaireBD): {end_time_dictionnaireBD - start_time}")
+                    print(f"\nTemps écoulé (synonymeBD): {end_time_synonymeBD - start_time}\n")
 
             elif self.args.r:
                 if self.args.t is None:
-                    return 'Erreur : Recherche besoin argument taille -t'
-                self.__afficher_options_recherche(self.args.v)
-
+                    raise Exception('Recherche besoin argument taille -t')
+                self.__afficher_options_recherche()
+            
             elif self.args.b:
                 dao.reinitialiser_bd()
-
-    @property
-    def traiter_arguments(self):
-        return self.__traiter_arguments   
     
-    def __afficher_options_recherche(self, verbose) -> None:
+    def __afficher_options_recherche(self) -> None:
         r = ""
-        while r != QUITTER:
-
-            r = input(MESS)
+        while r != con.QUITTER:
+            r = input(con.MESS)
 
             if r == 'q':
                 return
@@ -87,16 +70,13 @@ class LecteurArgs:
                     end_time = perf_counter()
                 case '2':
                     recherche.city_block()
-                    end_time = perf_counter()
-                case default:
-                    return             
+                    end_time = perf_counter()        
             
             print("")
             recherche.afficher_resultat()
             
-            # POUR IMPRIMER LE TEMPS DE CALCUL DES FONCTIONS :
-            if verbose:
-                print(f"\nTemps écoulé : {end_time - start_time}")
+            if self.args.v:
+                print(f"\nTemps écoulé (recherche): {end_time - start_time}")
         
 
  
