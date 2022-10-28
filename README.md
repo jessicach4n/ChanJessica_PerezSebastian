@@ -20,4 +20,7 @@ Utilisation d'une base de données pour emmagasiner les données qui nous ont pe
 ## Structure de la base de données utilisée
 <img src="C62/TP2/img/README-IMG.png">
 
+**Notes**
+La ligne de commande du programme peut prendre l'argument facultatif -v lors de l'entraînement et la recherche pour afficher le temps. S'il n'est pas utilisé, le temps ne sera pas affiché.
+
 
