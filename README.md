@@ -20,7 +20,8 @@ Utilisation d'une base de données pour emmagasiner les données qui nous ont pe
 ## Structure de la base de données utilisée
 <img src="C62/TP2/img/README-IMG.png">
 
-**Notes**
+**Notes**  
+Pour partir le programme, commencer par faire la commande ``python mainBD.py -b`` pour créer la base de données avant de faire l'entraînement suivi de la recherche.
 La ligne de commande du programme peut prendre l'argument facultatif -v lors de l'entraînement et la recherche pour afficher le temps. S'il n'est pas utilisé, le temps ne sera pas affiché.
 
 
