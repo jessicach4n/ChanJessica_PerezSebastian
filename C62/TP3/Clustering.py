@@ -17,12 +17,18 @@ class Clustering:
 
         self.__matrice = np.zeros((len(self.__dict_mots), len(self.__dict_mots)))
         self.__centroides = np.zeros((len(self.__dict_mots), nbre_centroides), dtype=float)
+        self.__nouveux_centroides = np.zeros((len(self.__dict_mots), nbre_centroides), dtype=float)
+        self.__matrice_asso_mot_cluster = np.zeros((len(self.__dict_mots),2))
+
 
         for id_mot, id_occurence, nb_occurence in self.__liste_synonymes:
             self.__matrice[id_mot,id_occurence] = nb_occurence
 
         self.__creer_matrice()
         self.__creer_centroides_depart()
+        self.__recalculer_centroide(self.__matrice_asso_mot_cluster)
+ 
+
 
     def __creer_centroides_depart(self) -> None:
         random_values = []
@@ -31,37 +37,55 @@ class Clustering:
             if idx_mot not in random_values:
                 random_values.append(idx_mot)
 
+        # Trouver les premiers centroides avec des valeurs de mot aléatoires
+        #self.__centroides contient les coordonnées de n centroides 
         for colonne in range(self.__centroides.shape[1]):
             self.__centroides[:, colonne] = self.__matrice[random_values[colonne]]
 
         self.__least_square()
 
     def __least_square(self) -> None:
-        counterdistance = 0
-        # clusters = {
-        #     'cluster1' : [],
-        #     'cluster2' : [],
-        #     'cluster3' : [],
-        #     'cluster4' : []
-        # }
 
         distances = np.zeros((self.__centroides.shape))
         for idx_centroide in range(self.__centroides.shape[1]):
             for idx_mot in range(self.__centroides.shape[0]):
                 distance = np.sum((self.__matrice[idx_centroide] - self.__matrice[idx_mot])**2)
-                distances[idx_mot,idx_centroide] = distance
-        
-       
-                # if distance is not None or distance < best_distance:
-                #     best_distance = distance
-                # elif distance is None:
-                #     best_distance = distance
-        print(distances)
-            
+                distances[idx_mot][idx_centroide] = distance
 
-        #         counterdistance+=1
-        # print(f'counter distance : {counterdistance}')
-        # print(f'centroide size : {self.__centroides.size}')
+        self.__associer_mot_a_cluster(distances)
+
+        print(distances)
+        # print(self.__matrice_asso_mot_cluster)
+
+    def __associer_mot_a_cluster(self, matrice_distance_mot_centroide:np.array):
+        for idx_mot_bd in range(matrice_distance_mot_centroide.shape[0]):
+            #if too slow, make a list at line 51 ti avoid doing argmin
+            centroide_plus_proche = np.argmin(matrice_distance_mot_centroide[idx_mot_bd])
+            self.__matrice_asso_mot_cluster[idx_mot_bd][1] = centroide_plus_proche
+            self.__matrice_asso_mot_cluster[idx_mot_bd][0] = idx_mot_bd    
+            
+        # print(self.__matrice_asso_mot_cluster)
+
+    def __recalculer_centroide(self, matrice_asso_mot_centroide:np.array):
+ 
+        for centroide in range(self.__nbre_centroides):
+            total_adition_position_mots = np.zeros((1, len(self.__dict_mots)))
+            nb_elements_dans_cluster = 0
+
+            for idx_mot_bd in range(matrice_asso_mot_centroide.shape[0]):
+                if(matrice_asso_mot_centroide[idx_mot_bd][1] == centroide):
+                    nb_elements_dans_cluster +=1
+                    # total_adition_position_mots += self.__matrice[idx_mot_bd]
+                    total_adition_position_mots = total_adition_position_mots + self.__matrice[idx_mot_bd]
+            totalavg= total_adition_position_mots /nb_elements_dans_cluster
+            self.__nouveux_centroides[:, centroide] = totalavg
+
+        print(self.__nouveux_centroides)
+        print(self.__centroides)
+        # print((matrice_asso_mot_centroide[:,1] == 0).sum())
+        
+        #eereur. 
+        #find size of matrix where centroiide = centroide then append each row to it then mamke an avg on it. 
 
 
     def __creer_dictionnaire_mots(self, dao:Dao) -> None:
