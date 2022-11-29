@@ -28,7 +28,8 @@ class Clustering:
         self.__ancien_cluster = np.arange(len(self.__dict_mots))
         self.__calculer_cluster()
         nb_changement = len(self.__matrice)
-
+        population_cluster = None
+        temps_depart_traitement = perf_counter()
         while nb_changement > 0:
             temps_depart = perf_counter()
             population_cluster = self.__recalculer_centroide()
@@ -37,9 +38,12 @@ class Clustering:
             nb_iteration += 1
             temps_fin = perf_counter()
 
-            self.__print_message(nb_iteration, temps_fin - temps_depart, nb_changement, population_cluster)
+            self.__print_iteration(nb_iteration, temps_fin - temps_depart, nb_changement, population_cluster)
+        
+        temps_fin_traitement = perf_counter()
+        self.__print_rapport(nb_iteration, temps_fin_traitement - temps_depart_traitement, population_cluster)
 
-    def __print_message(self, nb_iteration, temps, nb_changement, population_cluster) -> None:
+    def __print_iteration(self, nb_iteration, temps, nb_changement, population_cluster) -> None:
         separateur = "\n***********************************************************************\n"
         message = f"Iteration {nb_iteration} effectuée en {temps} secondes ({nb_changement} changements)\n"
         for idx, cluster in enumerate(population_cluster):
@@ -48,7 +52,34 @@ class Clustering:
         print(separateur)
         print(message)
         print(separateur)
+    
+    def __print_rapport(self, nb_iteration, temps, population_cluster):
+        separateur = "\n***********************************************************************\n"
+        message = f"Clustering effectué en {nb_iteration} itérations en un temps de {temps}\n"
 
+        distances = [[] for i in range(self.__nbre_centroides)]
+
+        for mot, idx in self.__dict_mots.items():
+            centroide = self.__cluster[idx]
+            distance = np.sum((self.__matrice[idx] - self.__centroides[centroide])**2)
+            distances[centroide].append((distance, mot))
+
+        for i in range(self.__nbre_centroides):
+            distances[i] =  sorted(distances[i])
+
+        for idx, cluster in enumerate(distances):
+            counter = 0
+            message += f"\nPour le cluster {idx}"
+            for distance, mot in cluster:
+                if counter < self.__nbre_mots:
+                    message += f"\n\t{mot} --> {distance}"
+                    counter += 1
+                else:
+                    continue
+
+        print(separateur)
+        print(message)
+        
     def __creer_centroides_depart(self) -> None:
         random_values = []
         i = 0
