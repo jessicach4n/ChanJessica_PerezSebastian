@@ -1,0 +1,21 @@
+ortho	phon	lemme	cgram	genre	nombre	freqlemfilms2	freqlemlivres	freqfilms2	freqlivres	infover	nbhomogr	nbhomoph	islem	nblettres	nbphons	cvcv	p_cvcv	voisorth	voisphon	puorth	puphon	syll	nbsyll	cv-cv	orthrenv	phonrenv	orthosyll	cgramortho	deflem	defobs	old20	pld20	morphoder	nbmorph
+a	a	a	NOM	m		81.36	58.65	81.36	58.65		3	8	1	1	1	V	V	25	18	1	1	a	1	V	a	a	a	NOM,AUX,VER			1	1	a	1
+a	a	avoir	AUX			18559.22	12800.81	6350.91	2926.69	ind:pre:3s;	3	8	0	1	1	V	V	25	18	1	1	a	1	V	a	a	a	NOM,AUX,VER			1	1	avoir	1
+a	a	avoir	VER			13572.40	6426.49	5498.34	1669.39	ind:pre:3s;	3	8	0	1	1	V	V	25	18	1	1	a	1	V	a	a	a	NOM,AUX,VER	93	16	1	1	avoir	1
+a capella	akapEla	a capella	ADV			0.04	0.07	0.04	0.07		1	2	1	9	7	V CVCVCCV	VCVCVCV	0	0	6	5	a-ka-pE-la	4	V-CV-CV-CV	allepac a	alEpaka	a ca-pel-la	ADV			3.85	2.85	a-capella	2
+a cappella	akapEla	a cappella	ADV			0.04	0.07	0.04	0.07		1	2	1	10	7	V CVCCVCCV	VCVCVCV	0	0	6	5	a-ka-pE-la	4	V-CV-CV-CV	alleppac a	alEpaka	a cap-pel-la	ADV			4.6	2.85	a-cappella	2
+a contrario	ak§tRaRjo	a contrario	ADV			0.00	0.27	0.00	0.27		1	1	1	11	9	V CVCCCVCVV	VCVCCVCYV	0	0	4	5	a-k§-tRa-Rjo	4	V-CV-CCV-CYV	oirartnoc a	ojRaRt§ka	a con-tra-rio	ADV			4.3	3.3	a-contrario	2
+a fortiori	afORsjoRi	a fortiori	ADV			0.04	0.88	0.04	0.88		1	2	1	10	9	V CVCCVVCV	VCVCCYVCV	1	0	3	4	a-fOR-sjo-Ri	4	V-CVC-CYV-CV	iroitrof a	iRojsROfa	a for-tio-ri	ADV			4.4	3.95	a-fortiori	2
+a giorno	adZjORno	a giorno	ADV			0.00	0.27	0.00	0.27		1	2	1	8	8	V CVVCCV	VCCYVCCV	1	0	3	4	ad-ZjOR-no	3	VC-CYVC-CV	onroig a	onROjZda	a gior-no	ADV			3.85	3.85	a-giorno	2
+a jeun	aZ1	à jeun	ADV			1.45	3.85	0.18	0.00		1	2	0	6	3	V CVVC	VCV	1	6	0	3	a-Z1	2	V-CV	nuej a	1Za	a jeun	ADV			2.9	1.6	à-jeun	2
+a l'instar	al5staR	a l'instar	PRE			0.26	0.00	0.26	0.00		1	2	1	10	7	V C'VCCCVC	VCVCCVC	1	0	3	4	a-l5s-taR	3	V-CVC-CVC	ratsni'l a	Rats5la	a l'ins-tar	PRE			4.8	3	a-l'instar	2
+abaissent	abEs	abaisser	VER			4.93	18.04	0.05	0.95	ind:pre:3p;	1	6	0	9	4	VCVVCCVCC	VCVC	1	4	0	4	a-bEs	2	V-CVC	tnessiaba	sEba	a-bais-sent	VER	100	25	1.85	1.4	abaisser	1
+abaisser	abese	abaisser	VER			4.93	18.04	1.09	2.91	inf;	1	10	1	8	5	VCVVCCVC	VCVCV	2	2	8	5	a-be-se	3	V-CV-CV	ressiaba	eseba	a-bais-ser	VER	100	25	1.7	1.8	abaisser	1
+abaissera	abEs°Ra	abaisser	VER			4.93	18.04	0.19	0.07	ind:fut:3s;	1	1	0	9	7	VCVVCCVCV	VCVCVCV	0	1	0	0	a-bE-s°-Ra	4	V-CV-CV-CV	aressiaba	aR°sEba	a-bais-se-ra	VER	100	25	1.8		abaisser	1
+abaisserai	abEs°RE	abaisser	VER			4.93	18.04	0.10	0.07	ind:fut:1s;	1	4	0	10	7	VCVVCCVCVV	VCVCVCV	0	2	0	0	a-bE-s°-RE	4	V-CV-CV-CV	iaressiaba	ER°sEba	a-bais-se-rai	VER	100	25	2.05		abaisser	1
+abaisseraient	abEs°RE	abaisser	VER			4.93	18.04	0.01	0.07	cnd:pre:3p;	1	4	0	13	7	VCVVCCVCVVVCC	VCVCVCV	0	2	0	0	a-bE-s°-RE	4	V-CV-CV-CV	tneiaressiaba	ER°sEba	a-bais-se-raient	VER	100	25	2.55		abaisser	1
+abaisserais	abEs°RE	abaisser	VER			4.93	18.04	0.13	0.00	cnd:pre:1s;cnd:pre:2s;	1	4	0	11	7	VCVVCCVCVVC	VCVCVCV	1	2	0	0	a-bE-s°-RE	4	V-CV-CV-CV	siaressiaba	ER°sEba	a-bais-se-rais	VER	100	25	2.25		abaisser	1
+abaisserait	abEs°RE	abaisser	VER			4.93	18.04	0.02	0.20	cnd:pre:3s;	1	4	0	11	7	VCVVCCVCVVC	VCVCVCV	1	2	0	0	a-bE-s°-RE	4	V-CV-CV-CV	tiaressiaba	ER°sEba	a-bais-se-rait	VER	100	25	2.15		abaisser	1
+abaisses	abEs	abaisser	VER			4.93	18.04	0.16	0.07	ind:pre:2s;	1	6	0	8	4	VCVVCCVC	VCVC	3	4	0	4	a-bEs	2	V-CVC	sessiaba	sEba	a-bais-ses	VER	100	25	1.65	1.4	abaisser	1
+abaissez	abEse	abaisser	VER			4.93	18.04	0.53	0.07	imp:pre:2p;ind:pre:2p;	1	1	0	8	5	VCVVCCVC	VCVCV	2	5	0	0	a-bE-se	3	V-CV-CV	zessiaba	esEba	a-bais-sez	VER	100	25	1.75	1.6	abaisser	1
+abaissons	abEs§	abaisser	VER			4.93	18.04	0.02	0.00	imp:pre:1p;	1	1	0	9	5	VCVVCCVCC	VCVCV	0	5	0	0	a-bE-s§	3	V-CV-CV	snossiaba	§sEba	a-bais-sons	VER	100	25	1.95	1.65	abaisser	1

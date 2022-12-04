@@ -9,13 +9,22 @@ VOTE_DISTANCE = 1
 def extraire_etiquettes(ch, enc):
     with open(ch, encoding = enc) as f:
         lignes = f.read().splitlines()
-    #print(lignes)
+    # print(lignes)
     noms = lignes[0].split(SEP)
-    etiqs = []
+    # print(noms)   
+    ortho_cgram_liste = []
+    cgram_liste = []
+    #on cree ici la liste de association entre ortho et cgram
     for valeur in lignes[1:]:
-        etiqs.append(int(valeur))
-    etiqs = np.array(etiqs)
-    return (noms, etiqs)
+        ortho = valeur.split(SEP)[0]
+        cgram = valeur.split(SEP)[3]
+        if cgram not in cgram_liste:
+            cgram_liste.append(cgram)
+        ortho_cgram_liste.append([ortho,cgram])
+    ortho_cgram_liste = np.array(ortho_cgram_liste)
+    # print(ortho_cgram_liste)
+    print(cgram_liste)
+    return (noms, ortho_cgram_liste)
 
 def extraire_caracteristiques(ch, enc):
     with open(ch, encoding=enc) as f:
@@ -60,26 +69,26 @@ def norm_somme(caracs):
     return caracs/np.sum(caracs, axis=1)[:, None]
 
 def main():
-    ch_etiq, ch_carac, enc, poids, long, larg, haut, k, pond = argv[1:]
-
+    #! ch_etiq, ch_carac, enc, poids, long, larg, haut, k, pond = argv[1:]
+    ch_etiq, enc = argv[1:]
     noms_etiqs, etiqs = extraire_etiquettes(ch_etiq, enc)
     #print(noms_etiqs)
     #print(etiqs)
     
-    noms_caracs, caracs = extraire_caracteristiques(ch_carac, enc)
+    #!noms_caracs, caracs = extraire_caracteristiques(ch_carac, enc)
     #print(noms_caracs)
     #print(caracs)
-    caracs = norm_somme(caracs)
+    #!caracs = norm_somme(caracs)
     #print(caracs)
     
-    inconnu = np.array((poids, long, larg, haut), dtype=float)
+    #! inconnu = np.array((poids, long, larg, haut), dtype=float)
     #print(inconnu)
 
-    k = int(k)
-    pond = int(pond)
+    #! k = int(k)
+    #! pond = int(pond)
 
-    votes = voter(noms_etiqs, etiqs, caracs, inconnu, k, pond)
-    print(votes)
+    #! votes = voter(noms_etiqs, etiqs, caracs, inconnu, k, pond)
+    #! print(votes)
 
     return 0
 
