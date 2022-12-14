@@ -25,3 +25,18 @@ Pour partir le programme, commencer par faire la commande ``python mainBD.py -b`
 La ligne de commande du programme peut prendre l'argument facultatif -v lors de l'entraînement et la recherche pour afficher le temps. S'il n'est pas utilisé, le temps ne sera pas affiché.
 
 
+# Dossier TP3 : 
+- se deplacer dans le fichier TP3 et entrer dans 
+## Pour utiliser utiliser le K-means: 
+- -c pour cluster 
+- -t pour la taille de fênetre
+- -k pour le nombre de centroïdes   
+- -n pour le nombre maximal de mots affichés par cluster 
+
+<code>mainCluster.py -c -t 5 -k 3 -n 10 </code>
+
+## Pour utiliser le Knn : 
+
+- mot represente le mot à chercher et nb_voisin le nombre de voisins désiré
+  
+<code>knn.py utf-8 mot nb_voisin </code>

@@ -40,12 +40,9 @@ class KNN():
     def creation_listes(self, ch, enc):
         with open(ch, encoding = enc) as f:
             lignes = f.read().splitlines()
-        # print(lignes)
         noms = lignes[0].split(self.SEP)
-        # print(noms)   
         ortho_cgram_liste = {}
         cgram_liste = []
-        #on cree ici la liste de association entre ortho et cgram
         for valeur in lignes[1:]:
             ortho = valeur.split(self.SEP)[0]
             cgram = valeur.split(self.SEP)[3]
@@ -55,12 +52,7 @@ class KNN():
             if ortho not in ortho_cgram_liste.keys():
                 ortho_cgram_liste[ortho] = [cgram]
             else :
-                # print(type(ortho_cgram_liste))
                 ortho_cgram_liste[ortho].append(cgram) 
-        # ortho_cgram_liste = np.array(ortho_cgram_liste)
-        # cgram_liste = np.array(cgram_liste)
-        # print(ortho_cgram_liste)
-        # print(cgram_liste)
         return (cgram_liste, ortho_cgram_liste)
 
     def extraire_caracteristiques(self, ch, enc):
@@ -96,7 +88,6 @@ class KNN():
 
     def voter(self, cgram, ortho_cgram, inconnu, k, pond):
         distances = []
-        print('distances')
         try:
             vec_inconnu = self.__matrice[self.__dict_mots[inconnu]]
         except: raise Exception("Ce mot n'est pas dans notre base de données")
@@ -104,15 +95,8 @@ class KNN():
         for mot, index in self.__dict_mots.items():
             if mot in ortho_cgram and mot != inconnu:
                 distances.append((np.sum((self.__matrice[index] - vec_inconnu)**2),mot,ortho_cgram[mot][0]))
-        print(type(ortho_cgram))
-        # for i in ortho_cgram.keys():
-        #     dist = self.ls(inconnu, ortho_cgram[i][0])
-        #     distances.append((dist, ortho_cgram[i][0]))
         distances = sorted(distances)[:k]
 
-        print(distances)
-        
-        print('votes')
         votes = np.zeros(len(cgram))
         for i in range(len(distances)):
             distance,mot,etiq = distances[i]
@@ -132,28 +116,19 @@ class KNN():
         return caracs/np.sum(caracs, axis=1)[:, None]
 
 def main():
-    #* ch_etiq, ch_carac, enc, poids, long, larg, haut, k, pond = argv[1:]
-    ch_etiq, enc = argv[1:]
+    ch_etiq = "./Lexique382.tsv"
+    enc, inconnu, k = argv[1:]
     knn = KNN(ch_etiq,enc, 3, 5)
     cgram, ortho_cgram = knn.creation_listes(ch_etiq, enc)
-    print(ortho_cgram)
-    print(cgram)
-    #*noms_caracs, caracs = extraire_caracteristiques(ch_carac, enc)
-    #print(noms_caracs)
-    #print(caracs)
-    #*caracs = norm_somme(caracs)
-    #print(caracs)
-    
-    #* inconnu = np.array((poids, long, larg, haut), dtype=float)
-    inconnu = 'fleur'
-    #print(inconnu)
 
-    k = int(6)
+    k = int(k)
     pond = int(0)
-
     votes = knn.voter(cgram, ortho_cgram, inconnu, k, pond)
 
-    print(f'this is votes {votes}')
+    print(f'votes pour la classe gramaticale de "{inconnu}": \n')
+    for vote in votes:
+        if vote[0] != '':
+            print(f'{vote[0]}\t\t--->{vote[1]}')
 
     return 0
 
