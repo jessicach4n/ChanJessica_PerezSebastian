@@ -26,7 +26,7 @@ La ligne de commande du programme peut prendre l'argument facultatif -v lors de 
 
 
 # Dossier TP3 : 
-- se deplacer dans le fichier TP3 et entrer dans 
+- se deplacer dans le fichier TP3 et entrer :
 ## Pour utiliser utiliser le K-means: 
 - -c pour cluster 
 - -t pour la taille de fênetre
