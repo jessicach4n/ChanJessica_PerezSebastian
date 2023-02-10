@@ -37,6 +37,6 @@ La ligne de commande du programme peut prendre l'argument facultatif -v lors de 
 
 ## Pour utiliser le Knn : 
 
-- mot represente le mot à chercher et nb_voisin le nombre de voisins désiré
+- mot représente le mot à chercher et nb_voisin le nombre de voisins désirés.
   
 <code>knn.py utf-8 mot nb_voisin </code>
